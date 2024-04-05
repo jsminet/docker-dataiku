@@ -47,6 +47,7 @@ RUN useradd dataiku && \
     c('httr', 'RJSONIO', 'dplyr', 'curl', 'IRkernel', 'sparklyr', 'ggplot2', 'gtools', 'tidyr', 'rmarkdown', 'base64enc', 'filelock'), \
     '/usr/local/lib/R/site-library', \
     repos='https://cloud.r-project.org')" && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh && \
     yum clean all
 
 USER dataiku
