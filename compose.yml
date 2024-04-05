@@ -1,0 +1,25 @@
+services:
+  traefik:
+    image: traefik:v2.11.0
+    ports:
+      # Exposes port 80 for incomming web requests
+      - 80:80
+      # The Web UI port http://0.0.0.0:8080 (enabled by --api.insecure=true)
+      - 8080:8080
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./app/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
+
+  dataiku:
+    image: jsminet/docker-dataiku:$DSS_VERSION
+    build: .
+    environment: 
+      - DSS_VERSION
+      - DSS_PORT
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dataiku.rule=Host(`$DATAIKU_DNS`)"
+      - "traefik.http.routers.dataiku.entrypoints=web"
+      - "traefik.http.routers.dataiku.service=dataiku"
+      - "traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT"

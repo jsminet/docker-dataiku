@@ -1,9 +1,9 @@
 FROM almalinux:8.9
 
-ARG DSS_VERSION=12.5.2 \
-    DSS_PORT=10000
+ARG DSS_VERSION=12.5.2
 
-ENV DSS_DATADIR=/home/dataiku/dss \
+ENV DSS_PORT=${DSS_PORT:-10000} \
+    DSS_DATADIR=/home/dataiku/dss \
     DSS_INSTALLDIR=/home/dataiku/dataiku-dss-$DSS_VERSION \
     DSSKIT=dataiku-dss-$DSS_VERSION \
     BUILD_DEPS="acl alsa-lib \
