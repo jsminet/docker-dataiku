@@ -1,8 +1,18 @@
 # Standard Dataiku DSS Dockerfile
 
-This directory contains the Dockerfile which is used by Dataiku to build the standard docker images for DSS.
+## Oracle connection
 
-To rebuild, run:
-    docker build --build-arg dssVersion=DSS_VERSION .
+### Database 21.3.0 Express Edition
 
-where DSS_VERSION is the DSS version to use, e.g. "11.2.0".
+|User|Password|Host|Port|SID|
+|---|---|---|---|---|
+|sys as sysdba|secret|oraclexe.localtest.me|1521|XE|
+|system|secret|oraclexe.localtest.me|1521|XE|
+|pdbadmin|secret|oraclexe.localtest.me|1521|XEPDB1|
+
+
+### Enterprise manager database express
+
+http://oraclexe.localtest.me/em/login
+
+![Alt text](/images/image01.png)

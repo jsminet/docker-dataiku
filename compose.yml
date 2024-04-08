@@ -6,6 +6,7 @@ services:
       - 80:80
       # The Web UI port http://0.0.0.0:8080 (enabled by --api.insecure=true)
       - 8080:8080
+      - 1521:1521
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -23,3 +24,34 @@ services:
       - "traefik.http.routers.dataiku.entrypoints=web"
       - "traefik.http.routers.dataiku.service=dataiku"
       - "traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT"
+
+  oracle-xe:
+    image: oraclexe:21.3.0
+    build: 
+      context: https://github.com/oracle/docker-images.git#main:OracleDatabase/SingleInstance/dockerfiles/21.3.0
+      dockerfile: Dockerfile.xe
+    hostname: oracle-xe
+    profiles:
+      - oracle-xe
+    environment:
+      - ORACLE_PWD
+      - ORACLE_CHARACTERSET
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.oracle-xe.rule=Host(`$ORACLE_XE_DNS`)"
+        - "traefik.http.routers.oracle-xe.entrypoints=web"
+        - "traefik.http.routers.oracle-xe.service=oracle-xe"
+        - "traefik.http.services.oracle-xe.loadbalancer.server.scheme=https"
+        - "traefik.http.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_HTTP_PORT"
+        - "traefik.tcp.routers.oracle-xe.rule=HostSNI(`*`)"
+        - "traefik.tcp.routers.oracle-xe.entrypoints=oracle-xe"
+        - "traefik.tcp.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_RPC_PORT"
+    volumes:
+      - "oradata:/opt/oracle/oradata"
+      # Volume with custom scripts to be run after database setup
+      - "./db/oracle/scripts/setup:/opt/oracle/scripts/setup"
+      # Volume with custom scripts to be run after database startup
+      - "./db/oracle/scripts/startup:/opt/oracle/scripts/startup"
+
+volumes: 
+  oradata:

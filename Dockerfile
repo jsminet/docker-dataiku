@@ -34,11 +34,8 @@ RUN useradd dataiku && \
     cd /home/dataiku && \
     echo "+ Downloading kit" && \
     curl -OsS https://cdn.downloads.dataiku.com/public/studio/$DSS_VERSION/$DSSKIT.tar.gz && \
-    echo "+ Extracting kit" && \
-    tar xf $DSSKIT.tar.gz && \
+    tar xvf $DSSKIT.tar.gz && \
     rm /home/dataiku/$DSSKIT.tar.gz && \
-# rm -rf $DSS_INSTALLDIR/scripts/install/installdir-postinstall.sh
-# rm -rf /home/dataiku/${DSSKIT}
     cd $DSS_INSTALLDIR/resources/graphics-export && \
     npm install puppeteer@13.7.0 fs && \
     chown -Rh dataiku:dataiku $DSS_INSTALLDIR && \
