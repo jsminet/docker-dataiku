@@ -1,6 +1,6 @@
 CONNECT TEST/test@//oracle-xe:1521/XEPDB1;
 -- Create starter set
-CREATE OR REPLACE VIEW CUSTOMERS_VW as (
+CREATE OR REPLACE VIEW VW_CUSTOMERS as (
     SELECT rownum as UNIQUE_ID,
     'user'||rownum as USR_NAME,
     'group'||mod(rownum,2) as GROUP_A,

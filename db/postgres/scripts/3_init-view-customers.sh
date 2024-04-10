@@ -10,5 +10,5 @@ row_number() over () %10 as group_b,
 'user'||row_number() over () as username, 
 normal_rand,
 upper(encode(gen_random_bytes(5),'hex')) as password
-FROM normal_rand(1000, 5, 3));
+FROM normal_rand(1000000, 5, 3));
 EOSQL
