@@ -3,7 +3,10 @@ FROM almalinux:8.9
 ARG DSS_VERSION=12.5.2
 
 ENV DSS_PORT=${DSS_PORT:-10000} \
-    DSS_DATADIR=/home/dataiku/dss \
+    DSS_DATADIR=${DSS_DATADIR:-/home/dataiku/dss} \
+    DSS_DRIVERS_PATH=${DSS_DRIVERS_PATH:-/usr/share/java} \
+    ORACLE_DRIVERS_PATH=${ORACLE_DRIVERS_PATH:-./db/oracle/drivers} \
+    POSTGRES_DRIVERS_PATH=${POSTGRES_DRIVERS_PATH:-./db/postgres/drivers} \
     DSS_INSTALLDIR=/home/dataiku/dataiku-dss-$DSS_VERSION \
     DSSKIT=dataiku-dss-$DSS_VERSION \
     BUILD_DEPS="acl alsa-lib \

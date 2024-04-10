@@ -7,6 +7,7 @@ services:
       # The Web UI port http://0.0.0.0:8080 (enabled by --api.insecure=true)
       - 8080:8080
       - 1521:1521
+      - 5432:5432
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -18,12 +19,17 @@ services:
     environment: 
       - DSS_VERSION
       - DSS_PORT
+      - DSS_DRIVERS_PATH
+      - ORACLE_JDBC_DRIVERS
+      - POSTGRES_JDBC_DRIVERS
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dataiku.rule=Host(`$DATAIKU_DNS`)"
       - "traefik.http.routers.dataiku.entrypoints=web"
       - "traefik.http.routers.dataiku.service=dataiku"
       - "traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT"
+    volumes:
+      - "$LOCAL_DRIVERS_PATH:$DSS_DRIVERS_PATH"
 
   oracle-xe:
     image: oraclexe:21.3.0
@@ -53,5 +59,26 @@ services:
       # Volume with custom scripts to be run after database startup
       - "./db/oracle/scripts/startup:/opt/oracle/scripts/startup"
 
+  postgres:
+    # Extend official images with postgres-contrib
+    image: postgres:latest-contrib
+    build: db/postgres
+    hostname: postgres
+    profiles:
+      - postgres
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    labels:
+        - "traefik.enable=true"
+        - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+        - "traefik.tcp.routers.postgres.entrypoints=postgres"
+        - "traefik.tcp.services.postgres.loadbalancer.server.port=$POSTGRES_RPC_PORT"
+    volumes:
+      - "postgresdata:/var/lib/postgresql/data"
+      # Volume with custom scripts to be run after database initialization
+      - "./db/postgres/scripts:/docker-entrypoint-initdb.d"
+
 volumes: 
   oradata:
+  postgresdata:

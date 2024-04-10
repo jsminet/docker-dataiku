@@ -17,3 +17,6 @@
 http://oraclexe.localtest.me/em/login
 
 ![Alt text](/images/image01.png)
+
+
+apt-get update && apt-get install -y postgresql-contrib

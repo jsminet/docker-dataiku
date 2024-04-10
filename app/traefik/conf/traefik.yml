@@ -31,6 +31,8 @@ entryPoints:
     address: ":443"
   oracle-xe:
     address: ":1521"
+  postgres:
+    address: ":5432"
 
 ################################################################
 # Auto signed certificate

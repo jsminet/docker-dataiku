@@ -18,6 +18,10 @@ elif [ $(bash -c 'source $DSS_DATADIR/bin/env-default.sh && echo $DKUINSTALLDIR'
 	$DSS_DATADIR/bin/dssadmin install-graphics-export
 fi
 
+# Create symbolic link for drivers jar files
+ln -s $DSS_DRIVERS_PATH/$ORACLE_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
+ln -s $DSS_DRIVERS_PATH/$POSTGRES_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
+
 DAITAIKU_CMD="$1"
 case "$DAITAIKU_CMD" in
   run)
