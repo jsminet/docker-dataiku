@@ -1,6 +1,7 @@
 FROM almalinux:8.9
 
-ARG DSS_VERSION=12.5.2
+# Latest version
+ARG DSS_VERSION=12.6.0
 
 ENV DSS_PORT=${DSS_PORT:-10000} \
     DSS_DATADIR=${DSS_DATADIR:-/home/dataiku/dss} \
@@ -22,7 +23,17 @@ ENV DSS_PORT=${DSS_PORT:-10000} \
                 R-core-devel \
                 tini \
                 unzip \
-                zip"
+                zip" \
+    R_DEPS="'base64enc',\
+            'curl',\
+            'dplyr',\
+            'filelock',\
+            'ggplot2','gtools',\
+            'httr',\
+            'IRkernel',\
+            'RJSONIO','rmarkdown',\
+            'sparklyr',\
+            'tidyr'"
 
 COPY docker-entrypoint.sh /usr/local/bin/
 WORKDIR /home/dataiku
@@ -43,8 +54,7 @@ RUN useradd dataiku && \
     npm install puppeteer@13.7.0 fs && \
     chown -Rh dataiku:dataiku $DSS_INSTALLDIR && \
     mkdir -p /usr/local/lib/R/site-library && \
-    R --slave --no-restore -e "install.packages( \
-    c('httr', 'RJSONIO', 'dplyr', 'curl', 'IRkernel', 'sparklyr', 'ggplot2', 'gtools', 'tidyr', 'rmarkdown', 'base64enc', 'filelock'), \
+    R --slave --no-restore -e "install.packages(c(${R_DEPS}), \
     '/usr/local/lib/R/site-library', \
     repos='https://cloud.r-project.org')" && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
