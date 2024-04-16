@@ -39,7 +39,7 @@ $ docker compose --profile postgres up -d
 #### Oracle XE
 [Enterprise manager database express](http://oraclexe.localtest.me/em/login) is also available
 
-![Alt text](/images/image01.png)
+![Enterprise manager database express home page](images/image01.png)
 
 Launching database using compose profile
 ```bash
