@@ -22,8 +22,8 @@ fi
 ln -s $DSS_DRIVERS_PATH/$ORACLE_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
 ln -s $DSS_DRIVERS_PATH/$POSTGRES_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
 
-DAITAIKU_CMD="$1"
-case "$DAITAIKU_CMD" in
+DATAIKU_CMD="$1"
+case "$DATAIKU_CMD" in
   run)
   shift 1
     CMD=(
@@ -32,7 +32,7 @@ case "$DAITAIKU_CMD" in
     )
     ;;
   *)
-    echo "Unknown command: $DAITAIKU_CMD" 1>&2
+    echo "Unknown command: $DATAIKU_CMD" 1>&2
     exit 1
 esac
 
