@@ -35,7 +35,7 @@ ENV DSS_PORT=${DSS_PORT:-10000} \
             'sparklyr',\
             'tidyr'"
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
 WORKDIR /home/dataiku
 
 # Dataiku account and data dir setup
@@ -57,7 +57,6 @@ RUN useradd dataiku && \
     R --slave --no-restore -e "install.packages(c(${R_DEPS}), \
     '/usr/local/lib/R/site-library', \
     repos='https://cloud.r-project.org')" && \
-    chmod +x /usr/local/bin/docker-entrypoint.sh && \
     yum clean all
 
 USER dataiku
