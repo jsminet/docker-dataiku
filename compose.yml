@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v2.11.0
+    image: traefik:3.1.0
     ports:
       # Exposes port 80 for incomming web requests
       - 80:80
@@ -23,13 +23,13 @@ services:
       - ORACLE_JDBC_DRIVERS
       - POSTGRES_JDBC_DRIVERS
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dataiku.rule=Host(`$DATAIKU_DNS`)"
-      - "traefik.http.routers.dataiku.entrypoints=web"
-      - "traefik.http.routers.dataiku.service=dataiku"
-      - "traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT"
+      - traefik.enable=true
+      - traefik.http.routers.dataiku.rule=Host(`$DATAIKU_DNS`)
+      - traefik.http.routers.dataiku.entrypoints=web
+      - traefik.http.routers.dataiku.service=dataiku
+      - traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT
     volumes:
-      - "$LOCAL_DRIVERS_PATH:$DSS_DRIVERS_PATH"
+      - $LOCAL_DRIVERS_PATH:$DSS_DRIVERS_PATH
 
   oracle-xe:
     image: oraclexe:21.3.0
@@ -43,21 +43,21 @@ services:
       - ORACLE_PWD
       - ORACLE_CHARACTERSET
     labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.oracle-xe.rule=Host(`$ORACLE_XE_DNS`)"
-        - "traefik.http.routers.oracle-xe.entrypoints=web"
-        - "traefik.http.routers.oracle-xe.service=oracle-xe"
-        - "traefik.http.services.oracle-xe.loadbalancer.server.scheme=https"
-        - "traefik.http.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_HTTP_PORT"
-        - "traefik.tcp.routers.oracle-xe.rule=HostSNI(`*`)"
-        - "traefik.tcp.routers.oracle-xe.entrypoints=oracle-xe"
-        - "traefik.tcp.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_RPC_PORT"
+        - traefik.enable=true
+        - traefik.http.routers.oracle-xe.rule=Host(`$ORACLE_XE_DNS`)
+        - traefik.http.routers.oracle-xe.entrypoints=web
+        - traefik.http.routers.oracle-xe.service=oracle-xe
+        - traefik.http.services.oracle-xe.loadbalancer.server.scheme=https
+        - traefik.http.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_HTTP_PORT
+        - traefik.tcp.routers.oracle-xe.rule=HostSNI(`*`)
+        - traefik.tcp.routers.oracle-xe.entrypoints=oracle-xe
+        - traefik.tcp.services.oracle-xe.loadbalancer.server.port=$ORACLE_XE_RPC_PORT
     volumes:
-      - "oradata:/opt/oracle/oradata"
+      - oradata:/opt/oracle/oradata
       # Volume with custom scripts to be run after database setup
-      - "./db/oracle/scripts/setup:/opt/oracle/scripts/setup"
+      - ./db/oracle/scripts/setup:/opt/oracle/scripts/setup
       # Volume with custom scripts to be run after database startup
-      - "./db/oracle/scripts/startup:/opt/oracle/scripts/startup"
+      - ./db/oracle/scripts/startup:/opt/oracle/scripts/startup
 
   postgres:
     # Extend official images with postgres-contrib
@@ -70,14 +70,14 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
     labels:
-        - "traefik.enable=true"
-        - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
-        - "traefik.tcp.routers.postgres.entrypoints=postgres"
-        - "traefik.tcp.services.postgres.loadbalancer.server.port=$POSTGRES_RPC_PORT"
+        - traefik.enable=true
+        - traefik.tcp.routers.postgres.rule=HostSNI(`*`)
+        - traefik.tcp.routers.postgres.entrypoints=postgres
+        - traefik.tcp.services.postgres.loadbalancer.server.port=$POSTGRES_RPC_PORT
     volumes:
-      - "postgresdata:/var/lib/postgresql/data"
+      - postgresdata:/var/lib/postgresql/data
       # Volume with custom scripts to be run after database initialization
-      - "./db/postgres/scripts:/docker-entrypoint-initdb.d"
+      - ./db/postgres/scripts:/docker-entrypoint-initdb.d
 
 volumes: 
   oradata:

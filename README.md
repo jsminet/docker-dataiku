@@ -5,9 +5,9 @@ This repository aims to install **a ready to use** Daitaiku environment using do
     
 ## 🧐 Features    
 - Daitaiku DSS free without license (some features are disabled)
-- Oracle connection is not available with free edition, if you have a license key, you can activate it using a docker compose profile
+- Oracle connection is not available with free edition, if you have a license key, you can activate it using a docker compose ```oracle-xe``` profile
 - Using [*.localtest.me](https://readme.localtest.me/) avoiding to modify your host file
-- You can play with a one million lines customers dataset, automaticaly generated as a database view -> see  *vw_customers*
+- You can play with a one million lines customers dataset, automaticaly generated as a database view with name  ```vw_customers```
 
 ## 🛠️ Tech Stack
 - [Dataiku](https://www.dataiku.com)
@@ -16,6 +16,8 @@ This repository aims to install **a ready to use** Daitaiku environment using do
 - [Postgres](https://www.postgresql.org/)
 
 ## 🧑🏻‍💻 Usage
+
+### Build and start
 ```bash
 $ git clone https://github.com/jsminet/docker-dataiku.git
 $ ./jars/download.sh # or ./jars/download.bat
@@ -23,6 +25,11 @@ $ docker compose --profile postgres build --pull
 $ docker compose --profile postgres up -d && docker compose logs -f dataiku
 ```
 WARNING: Building the images take times 
+
+### Stop and clean volumes
+```bash
+$ docker compose down -v
+```
 
 ## 🛠️ Database connection
 #### Postgres
