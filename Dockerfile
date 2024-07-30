@@ -51,6 +51,7 @@ RUN useradd dataiku && \
     rm /home/dataiku/$DSSKIT.tar.gz && \
     cd $DSS_INSTALLDIR/resources/graphics-export && \
     npm install puppeteer@22.4.1 fs && \
+    chown -Rh dataiku:dataiku $DSS_INSTALLDIR && \
     mkdir -p /usr/local/lib/R/site-library && \
     R --slave --no-restore -e "install.packages(c(${R_DEPS}), \
     '/usr/local/lib/R/site-library', \
