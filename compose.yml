@@ -16,20 +16,19 @@ services:
   dataiku:
     image: jsminet/docker-dataiku:$DSS_VERSION
     build: .
-    environment: 
-      - DSS_VERSION
+    environment:
       - DSS_PORT
-      - DSS_DRIVERS_PATH
-      - ORACLE_JDBC_DRIVERS
-      - POSTGRES_JDBC_DRIVERS
     labels:
       - traefik.enable=true
       - traefik.http.routers.dataiku.rule=Host(`$DATAIKU_DNS`)
       - traefik.http.routers.dataiku.entrypoints=web
       - traefik.http.routers.dataiku.service=dataiku
       - traefik.http.services.dataiku.loadbalancer.server.port=$DSS_PORT
+    #entrypoint: tail -f /dev/null
     volumes:
-      - $LOCAL_DRIVERS_PATH:$DSS_DRIVERS_PATH
+      - dataikudata:$DSS_DATADIR
+      # Add jars for DB connection
+      - ./jars:$DSS_DATADIR/lib/jdbc
 
   oracle-xe:
     image: oraclexe:21.3.0
@@ -82,3 +81,4 @@ services:
 volumes: 
   oradata:
   postgresdata:
+  dataikudata:

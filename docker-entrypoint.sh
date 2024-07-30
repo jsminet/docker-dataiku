@@ -2,32 +2,30 @@
 # echo commands to the terminal output
 set -ex
 
+export PATH=$PATH:${DSS_INSTALLDIR}:${DSS_DATADIR}/bin
+
 echo "+ Run installation"
 
 if [ ! -f $DSS_DATADIR/bin/env-default.sh ]; then
-	# Initialize new data directory
-	$DSS_INSTALLDIR/installer.sh -d $DSS_DATADIR -p $DSS_PORT
-	$DSS_DATADIR/bin/dssadmin install-R-integration
-	$DSS_DATADIR/bin/dssadmin install-graphics-export
-	echo dku.registration.channel=docker-image >> $DSS_DATADIR/config/dip.properties
-	echo dku.exports.chrome.sandbox=false >> $DSS_DATADIR/config/dip.properties
+	echo "+ Initialize new data directory"
+    installer.sh -d $DSS_DATADIR -p $DSS_PORT
+    dssadmin install-R-integration
+    dssadmin install-graphics-export
+    echo dku.registration.channel=docker-image >> $DSS_DATADIR/config/dip.properties
+    echo dku.exports.chrome.sandbox=false >> $DSS_DATADIR/config/dip.properties
 elif [ $(bash -c 'source $DSS_DATADIR/bin/env-default.sh && echo $DKUINSTALLDIR') != $DSS_INSTALLDIR ]; then
-	# Upgrade existing data directory
-	$DSS_INSTALLDIR/installer.sh -d $DSS_DATADIR -u -y
-	$DSS_DATADIR/bin/dssadmin install-R-integration
-	$DSS_DATADIR/bin/dssadmin install-graphics-export
+	echo "+ Upgrade existing data directory"
+	  installer.sh -d $DSS_DATADIR -u -y
+	  dssadmin install-R-integration
+	  dssadmin install-graphics-export
 fi
-
-# Create symbolic link for drivers jar files
-ln -s $DSS_DRIVERS_PATH/$ORACLE_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
-ln -s $DSS_DRIVERS_PATH/$POSTGRES_JDBC_DRIVERS $DSS_DATADIR/lib/jdbc
 
 DATAIKU_CMD="$1"
 case "$DATAIKU_CMD" in
-  run)
+  start | run)
   shift 1
     CMD=(
-      $DSS_DATADIR/bin/dss run \
+      $DSS_DATADIR/bin/dss start \
           "$@"
     )
     ;;
