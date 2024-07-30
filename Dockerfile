@@ -62,4 +62,4 @@ USER dataiku
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["start"]
+CMD ["run"]

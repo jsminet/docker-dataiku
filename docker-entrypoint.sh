@@ -22,10 +22,10 @@ fi
 
 DATAIKU_CMD="$1"
 case "$DATAIKU_CMD" in
-  start | run)
+  run)
   shift 1
     CMD=(
-      $DSS_DATADIR/bin/dss start \
+      $DSS_DATADIR/bin/dss run \
           "$@"
     )
     ;;
