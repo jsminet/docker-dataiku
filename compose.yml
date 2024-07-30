@@ -28,7 +28,7 @@ services:
     volumes:
       - dataikudata:$DSS_DATADIR
       # Add jars for DB connection
-      - ./jars:$DSS_DATADIR/lib/jdbc
+      - ./jars:/usr/share/java
 
   oracle-xe:
     image: oraclexe:21.3.0
