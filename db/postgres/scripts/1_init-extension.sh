@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 # tablefunc istallation - https://www.postgresql.org/docs/current/tablefunc.html
 # pgcrypto istallation - https://www.postgresql.org/docs/current/pgcrypto.html
 

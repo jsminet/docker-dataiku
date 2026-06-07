@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:3.6.2
+    image: traefik:3.6.13
     ports:
       # Exposes port 80 for incomming web requests
       - 80:80
@@ -14,7 +14,7 @@ services:
       - ./app/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
 
   dataiku:
-    image: jsminet/docker-dataiku:$DSS_VERSION
+    image: dataiku/dss:$DSS_VERSION
     build: .
     environment:
       - DSS_PORT
@@ -28,7 +28,7 @@ services:
     volumes:
       - dataikudata:$DSS_DATADIR
       # Add jars for DB connection
-      - ./jars:/usr/share/java
+      #- ./jars:/usr/share/java
 
   oracle-xe:
     image: oraclexe:21.3.0
@@ -63,8 +63,6 @@ services:
     image: postgres:latest-contrib
     build: db/postgres
     hostname: postgres
-    profiles:
-      - postgres
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -78,6 +76,16 @@ services:
       # Volume with custom scripts to be run after database initialization
       - ./db/postgres/scripts:/docker-entrypoint-initdb.d
 
+  adminer:
+    image: adminer
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`$ADMINER_UI_DNS`)"
+      - "traefik.http.routers.adminer.entrypoints=web"
+      - "traefik.http.routers.adminer.service=adminer"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+      
 volumes: 
   oradata:
   postgresdata:

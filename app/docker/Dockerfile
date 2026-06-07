@@ -1,11 +1,11 @@
 FROM almalinux:9.7
 
 # Latest version
-ARG DSS_VERSION=14.2.2
+ARG DSS_VERSION=14.6.1 \
+    DSS_PORT=10000 \
+    DSS_DATADIR=/home/dataiku/dss 
 
-ENV DSS_PORT=${DSS_PORT:-10000} \
-    DSS_DATADIR=${DSS_DATADIR:-/home/dataiku/dss} \
-    DSS_INSTALLDIR=/home/dataiku/dataiku-dss-$DSS_VERSION \
+ENV DSS_INSTALLDIR=/home/dataiku/dataiku-dss-$DSS_VERSION \
     DSSKIT=dataiku-dss-$DSS_VERSION \
     BUILD_DEPS="acl alsa-lib \
                 dejavu-sans-fonts \

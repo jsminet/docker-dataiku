@@ -25,7 +25,7 @@ case "$DATAIKU_CMD" in
   run)
   shift 1
     CMD=(
-      $DSS_DATADIR/bin/dss run \
+      dss run \
           "$@"
     )
     ;;
