@@ -21,8 +21,8 @@ This repository aims to install **a ready to use** Daitaiku environment using do
 ```bash
 $ git clone https://github.com/jsminet/docker-dataiku.git
 $ ./jars/download.sh # or ./jars/download.bat
-$ docker compose --profile postgres build --pull
-$ docker compose --profile postgres up -d && docker compose logs -f dataiku
+$ docker compose build postgres --pull
+$ docker compose up -d && docker compose logs -f dataiku
 ```
 WARNING: Building the images take times 
 
@@ -36,7 +36,7 @@ $ docker compose down -v
 
 Launching the stack using postgres
 ```bash
-$ docker compose --profile postgres up -d
+$ docker compose up -d
 ```
 
 |User|Password|Host|Port|

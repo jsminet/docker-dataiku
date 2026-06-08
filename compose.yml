@@ -72,7 +72,7 @@ services:
         - traefik.tcp.routers.postgres.entrypoints=postgres
         - traefik.tcp.services.postgres.loadbalancer.server.port=$POSTGRES_RPC_PORT
     volumes:
-      - postgresdata:/var/lib/postgresql/data
+      - postgresdata:/var/lib/postgresql
       # Volume with custom scripts to be run after database initialization
       - ./db/postgres/scripts:/docker-entrypoint-initdb.d
 
